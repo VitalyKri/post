@@ -1,0 +1,125 @@
+databaseChangeLog:
+  - changeSet:
+      id: create_table_users
+      author: Кривобоков Виталий
+      changes:
+        - createTable:
+            tableName: users
+            columns:
+              - column:
+                  name: id
+                  type: uuid
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: version
+                  type: int
+              - column:
+                  name: createdBy
+                  type: varchar(255)
+              - column:
+                  name: createdDate
+                  type: datetime
+              - column:
+                  name: lastModifiedBy
+                  type: varchar(255)
+              - column:
+                  name: lastModifiedDate
+                  type: datetime
+  - changeSet:
+      id: create_table_post
+      author: Кривобоков Виталий
+      changes:
+        - createTable:
+            tableName: posts
+            columns:
+              - column:
+                  name: id
+                  type: uuid
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: version
+                  type: int
+              - column:
+                  name: createdBy
+                  type: varchar(255)
+              - column:
+                  name: createdDate
+                  type: datetime
+              - column:
+                  name: lastModifiedBy
+                  type: varchar(255)
+              - column:
+                  name: lastModifiedDate
+                  type: datetime
+              - column:
+                  name: title
+                  type: varchar(255)
+              - column:
+                  name: description
+                  type: varchar(255)
+              - column:
+                  name: user_id
+                  type: uuid
+              - column:
+                  name: linkSource
+                  type: varchar(511)
+              - column:
+                  name: linkContent
+                  type: varchar(511)
+        - addForeignKeyConstraint:
+            baseColumnNames: user_id
+            baseTableName: posts
+            referencedColumnNames: id
+            referencedTableName: users
+            constraintName: fk_posts_users_id
+            onDelete: NO ACTION
+            onUpdate: NO ACTION
+  - changeSet:
+      id: create_table_pictures
+      author: Кривобоков Виталий
+      changes:
+        - createTable:
+            tableName: pictures
+            columns:
+              - column:
+                  name: id
+                  type: uuid
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: version
+                  type: int
+              - column:
+                  name: createdBy
+                  type: varchar(255)
+              - column:
+                  name: createdDate
+                  type: datetime
+              - column:
+                  name: lastModifiedBy
+                  type: varchar(255)
+              - column:
+                  name: lastModifiedDate
+                  type: datetime
+              - column:
+                  name: name
+                  type: varchar(511)
+              - column:
+                  name: link
+                  type: varchar(511)
+              - column:
+                  name: post_id
+                  type: uuid
+        - addForeignKeyConstraint:
+            baseColumnNames: post_id
+            baseTableName: pictures
+            referencedColumnNames: id
+            referencedTableName: posts
+            constraintName: fk_pictures_posts_id
+            onDelete: NO ACTION
+            onUpdate: NO ACTION

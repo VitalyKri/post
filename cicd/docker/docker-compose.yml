@@ -1,0 +1,43 @@
+version: '3.7'
+services:
+  liquidbase_blog:
+    image: liquibase:4.10
+    build:
+      context: .
+      dockerfile: dockerfile_liquidbase
+    command: liquibase update --url="jdbc:postgresql://${POSTGRES_URL}:${POSTGRES_PORT}/${POSTGRES_DB}"
+          --username=$POSTGRES_USER
+          --password=$POSTGRES_PASSWORD
+          --driver=$POSTGRES_DRIVER
+          --changelog-file=changelog/db.changelog-master.yml
+    environment:
+      - POSTGRES_DRIVER=${POSTGRES_DRIVER}
+      - POSTGRES_URL=${POSTGRES_URL}
+      - POSTGRES_PORT=${POSTGRES_PORT}
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    networks:
+      - myNetwork
+    volumes:
+      - ../import/liquibase/changelog:/liquibase/changelog
+  blog:
+    image: post:1.0.0
+    build:
+      context: .
+      dockerfile: dockerfile_java
+    depends_on:
+      - liquidbase_blog
+    ports:
+      - "9898:8080"
+    environment:
+      - POSTGRES_DRIVER=${POSTGRES_DRIVER}
+      - POSTGRES_URL=${POSTGRES_URL}
+      - POSTGRES_PORT=${POSTGRES_PORT}
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    networks:
+      - myNetwork
+networks:
+  myNetwork:

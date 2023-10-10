@@ -1,0 +1,32 @@
+spring:
+  application:
+    name: "post"
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    generate-ddl: true
+    show-sql: true
+  datasource:
+    hikari:
+      driver-class-name: 'org.h2.Driver'
+app:
+  css-style-location:
+  convert-params:
+    - ${PANDOC_PATH}
+    - "-f"
+    - "markdown"
+    - "-t"
+    - "html"
+    - "--toc"
+    - "-c"
+    - ${CSS_STYLE_LOCATION}
+    - "--self-contained" # --self-contained добавляет html заголовок, без него просто будет body
+aws.s3:
+  endpoint: ${ENDPOINT}
+  signer: AWSS3V4SignerType
+  access-key: ${ACCESSKEY}
+  secret-key: ${SECRETKEY}
+  region: ${REGION}
+  bucket-source:  ${BUCKETSOURCE}
+  bucket-content: ${BUCKETCONTENT}
+server:
+  port: 9900
