@@ -3,6 +3,7 @@ package ru.skillbox.post.service;
 
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cloud.sleuth.annotation.NewSpan;
 import org.springframework.web.multipart.MultipartFile;
 import ru.skillbox.post.repository.s3.S3Repository;
 
@@ -13,14 +14,17 @@ import java.util.Collection;
 public class StorageService {
     private final S3Repository repository;
 
+    @NewSpan
     public Collection<String> getAllFilesByPrefix(String prefix) {
         return repository.listKeys(prefix);
     }
+
 
     public String getEndpoint() {
         return repository.getEndpoint();
     }
 
+    @NewSpan
     public void putObject(String key, MultipartFile file) throws IOException {
         try (var inputStream = file.getInputStream()) {
             ObjectMetadata metadata = new ObjectMetadata();
@@ -30,6 +34,7 @@ public class StorageService {
         }
     }
 
+    @NewSpan
     public void deleteObject(String key) {
         repository.delete(key);
     }

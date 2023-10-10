@@ -4,6 +4,7 @@ package ru.skillbox.post.service;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.sleuth.annotation.NewSpan;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -37,6 +38,7 @@ public class ProcessingS3Service {
 
     }
 
+    @NewSpan
     public void savePostAsHtml(Post post, MultipartFile sourceMdFile) {
         processSaveFile(post, Collections.singletonList(sourceMdFile));
     }
