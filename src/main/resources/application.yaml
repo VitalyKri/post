@@ -5,6 +5,11 @@ spring:
     url: jdbc:postgresql://${POSTGRES_URL}:${POSTGRES_PORT}/${POSTGRES_DB}
     username: ${POSTGRES_USER}
     password: ${POSTGRES_PASSWORD}
+management:
+  endpoint:
+    web:
+      exposure:
+        include: loggers, health, info, mappings
 app:
   css-style-location:
   convert-params:
